@@ -23,7 +23,6 @@ public class ShopServiceImpl implements ShopService {
 
 	@Override
 	public List<Shop> findAll() {
-		// TODO Auto-generated method stub
 		log.info("ShopServiceImpl");
 		return shopDao.findAll();
 	}

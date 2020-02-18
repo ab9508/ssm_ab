@@ -15,20 +15,20 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author ab
- *
- *         2020年2月17日
+ * <p>
+ * 2020年2月17日
  */
 @RestController
 @Slf4j
 public class ShopController {
-	@Autowired
-	private ShopService shopService;
+    @Autowired
+    private ShopService shopService;
 
-	@GetMapping("/api/shop/find")
-	public Result<List<Shop>> find() {
-		List<Shop> list = shopService.findAll();
-		log.info("list= {}", list);
-
-		return new Result<>(200, "查询成功", list);
-	}
+    @GetMapping("/api/shop/find")
+    public Result<List<Shop>> find() {
+        log.info("start findAll");
+        List<Shop> list = shopService.findAll();
+        log.info("list= {}", list);
+        return new Result<>(200, "查询成功", list);
+    }
 }
