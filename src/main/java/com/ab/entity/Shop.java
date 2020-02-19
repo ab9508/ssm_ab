@@ -6,12 +6,17 @@ import lombok.Data;
 
 /**
  * @author ab
- *
- * @creatTime 2020年2月17日
+ * @createrTime 2020年2月17日
  */
 @Data
 public class Shop implements Serializable {
-	private Integer shopId;
-	private String shopName;
+    /**
+     * 商店id
+     */
+    private Integer shopId;
+    /**
+     * 商店编号
+     */
+    private String shopName;
 
 }
