@@ -18,9 +18,8 @@ import springfox.documentation.service.Contact;
  * @description swagger configuration
  * @date
  */
-@Configuration  // 注册成ioc组件
-@EnableSwagger2  //开启swagger2
-
+@Configuration
+@EnableSwagger2
 public class SwaggerConfiguration {
     /**
      * 扫描所有带@ApiOperation注解的类

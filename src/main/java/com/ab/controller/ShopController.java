@@ -30,10 +30,8 @@ public class ShopController {
     @ApiOperation(value = "shop表全查")
     @GetMapping("/api/shop/find")
     public ResponseEntity<List<Shop>> find() {
-        log.info("start findAll");
         StringBuffer stringBuffer = new StringBuffer();
         List<Shop> list = shopService.findAll();
-        log.info("list= {}", list);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
