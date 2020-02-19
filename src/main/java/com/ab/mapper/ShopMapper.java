@@ -1,6 +1,7 @@
 package com.ab.mapper;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.ab.entity.Shop;
 
@@ -15,5 +16,13 @@ public interface ShopMapper {
 	 * @return
 	 */
 	List<Shop> findAll();
+
+    List<Shop> find(ConcurrentHashMap<String, String> map);
+
+	int save(Shop shop);
+
+	void update(Shop shop);
+
+	void delete(int shopId);
 
 }

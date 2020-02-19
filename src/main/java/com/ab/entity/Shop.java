@@ -10,6 +10,9 @@ import lombok.Data;
  */
 @Data
 public class Shop implements Serializable {
+    public static final String SHOP_ID = "shopId";
+    public static final String SHOP_NAME = "shopName";
+
     /**
      * 商店id
      */

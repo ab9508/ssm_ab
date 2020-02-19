@@ -1,6 +1,7 @@
 package com.ab.service;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.ab.entity.Shop;
 
@@ -15,5 +16,13 @@ public interface ShopService {
 	 * @return
 	 */
 	List<Shop> findAll();
+
+	List<Shop> find(ConcurrentHashMap<String,String> map);
+
+	void save(Shop shop);
+
+	void update(Shop shop);
+
+	void delete(int shopId);
 
 }
