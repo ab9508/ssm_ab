@@ -11,6 +11,8 @@ import com.ab.mapper.ShopMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.Resource;
+
 /**
  * @author ab
  * @createTime 2020年2月17日
@@ -18,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class ShopServiceImpl implements ShopService {
-    @Autowired
+    @Resource
     private ShopMapper shopMapper;
 
     @Override
