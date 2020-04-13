@@ -17,4 +17,7 @@ public class TestApplication {
 	public void test(){
 		System.out.println("001");
 	}
+	public void test6(){
+		System.out.println("006");
+	}
 }
