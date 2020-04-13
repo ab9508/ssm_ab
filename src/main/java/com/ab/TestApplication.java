@@ -13,5 +13,7 @@ public class TestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TestApplication.class, args);
 	}
-
+	public void test6(){
+		System.out.println("006");
+	}
 }
