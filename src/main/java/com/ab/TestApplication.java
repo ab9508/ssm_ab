@@ -14,4 +14,7 @@ public class TestApplication {
 		SpringApplication.run(TestApplication.class, args);
 	}
 
+	public void test(){
+		System.out.println("0000");
+	}
 }
