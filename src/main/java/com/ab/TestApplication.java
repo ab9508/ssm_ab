@@ -15,6 +15,6 @@ public class TestApplication {
 	}
 
 	public void test(){
-		System.out.println("0000");
+		System.out.println("0005");
 	}
 }
