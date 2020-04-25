@@ -19,5 +19,6 @@ public class TestApplication {
 	}
 	public void test6(){
 		System.out.println("006");
+		System.out.println("test");
 	}
 }
