@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @Slf4j
 public class HttpAspect {
-    @Pointcut("execution(public * com.ab.controller.*.*(..)) || execution(public * com.ab.service.*.*(..)) || execution(public * com.ab.mapper.*.*(..))")
+    @Pointcut("execution(public * com.ab.controller.*.*(..)) || execution(public * com.ab.service.*.*(..)) " +
+            "|| execution(public * com.ab.mapper.*.*(..)) || execution(public * com.ab.test.*.*(..))")
     public void log() {
     }
 
