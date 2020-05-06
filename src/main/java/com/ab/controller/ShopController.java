@@ -7,19 +7,25 @@ import java.util.concurrent.ConcurrentHashMap;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import com.ab.entity.Shop;
 import com.ab.service.ShopService;
 
 import lombok.extern.slf4j.Slf4j;
+
+import javax.annotation.Resource;
 
 /**
  * @author ab
@@ -32,32 +38,50 @@ import lombok.extern.slf4j.Slf4j;
 public class ShopController {
     @Autowired
     private ShopService shopService;
+    @Resource
+    private ValueOperations<String, Object> valueOperations;
 
     @ApiOperation(value = "shop表全查")
     @GetMapping("/api/shop/find")
     public ResponseEntity<List<Shop>> find(
-            @ApiParam(value = "shopId", defaultValue = "") @RequestParam(value = "shopId", required = false, defaultValue = "") String shopId,
+            @ApiParam(value = "shopId", defaultValue = "") @RequestParam(value = "shopId", required = true, defaultValue = "") String shopId,
             @ApiParam(value = "shopName", defaultValue = "") @RequestParam(value = "shopName", required = false, defaultValue = "") String shopName
     ) {
         ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
         map.put("shopId", shopId);
         map.put("shopName", shopName);
+        //先查询redis，如果redis中没有数据，在查询DB
+        List<Shop> resultRedis = null;
+        if (StringUtils.isNotBlank(shopId)) {
+            //此处还需优化,可能类型转化异常
+            resultRedis = (List<Shop>) valueOperations.get(Shop.class.getName() + shopId);
+        }
+        if (resultRedis != null) {
+            return new ResponseEntity<>(resultRedis, HttpStatus.OK);
+        }
+        log.info("redis get key is null,select DB");
         List<Shop> list = shopService.find(map);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @ApiOperation(value = "添加")
     @PostMapping("/api/shop/save/{shop}")
-    public ResponseEntity<Void> save(@RequestBody Shop shop) {
+    public ResponseEntity<Shop> save(@RequestBody Shop shop) {
         shopService.save(shop);
-        return new ResponseEntity<>(HttpStatus.OK);
+        //以（shopId，shop）存入redis
+        valueOperations.set(Shop.class.getName() + shop.getShopId(), shop);
+        MultiValueMap<String, String> header = new LinkedMultiValueMap<String, String>();
+        return new ResponseEntity<>(shop, header, HttpStatus.OK);
     }
 
     @ApiOperation(value = "修改")
     @PutMapping("/api/shop/update/{shop}")
-    public ResponseEntity<Void> update(@RequestBody Shop shop) {
+    public ResponseEntity<Shop> update(@RequestBody Shop shop) {
         shopService.update(shop);
-        return new ResponseEntity<>(HttpStatus.OK);
+        //以（shopId，shop）存入redis
+        valueOperations.set(Shop.class.getName() + shop.getShopId(), shop);
+        MultiValueMap<String, String> header = new LinkedMultiValueMap<String, String>();
+        return new ResponseEntity<>(shop, header, HttpStatus.OK);
     }
 
     @ApiOperation(value = "删除")
@@ -66,6 +90,7 @@ public class ShopController {
             @ApiParam(value = "shopId", required = true, defaultValue = "") @RequestParam(value = "shopId", required = true, defaultValue = "") int shopId
     ) {
         shopService.delete(shopId);
+        valueOperations.decrement(Shop.class.getName() + shopId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
