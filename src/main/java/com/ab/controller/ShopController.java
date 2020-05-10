@@ -41,15 +41,20 @@ public class ShopController {
     @Resource
     private ValueOperations<String, Object> valueOperations;
 
-    @ApiOperation(value = "shop表全查")
+    @ApiOperation(value = "shop表查询")
     @GetMapping("/api/shop/find")
     public ResponseEntity<List<Shop>> find(
             @ApiParam(value = "shopId", defaultValue = "") @RequestParam(value = "shopId", required = true, defaultValue = "") String shopId,
-            @ApiParam(value = "shopName", defaultValue = "") @RequestParam(value = "shopName", required = false, defaultValue = "") String shopName
+            @ApiParam(value = "shopName", defaultValue = "") @RequestParam(value = "shopName", required = false, defaultValue = "") String shopName,
+            @ApiParam(value = "shopIdOrder", defaultValue = "") @RequestParam(value = "shopIdOrder", required = false, defaultValue = "") String shopIdOrder,
+            @ApiParam(value = "shopNameOrder", defaultValue = "") @RequestParam(value = "shopNameOrder", required = false, defaultValue = "") String shopNameOrder
+
     ) {
-        ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<>();
         map.put("shopId", shopId);
         map.put("shopName", shopName);
+        map.put("shopIdOrder", shopIdOrder);
+        map.put("shopNameOrder", shopNameOrder);
         //先查询redis，如果redis中没有数据，在查询DB
         List<Shop> resultRedis = null;
         if (StringUtils.isNotBlank(shopId)) {

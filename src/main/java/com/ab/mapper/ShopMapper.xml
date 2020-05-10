@@ -24,14 +24,40 @@
 
 	<select id="find" resultMap="shopResultMap">
 		select shop_id,shop_name from shop
-		<where>
-			<if test="shopId != null and shopId !=''">
-				and shop_id = ${shopId}
-			</if>
-			<if test="shopName != null and shopName !=''">
-				and shop_Name = ${shopName}
-			</if>
-		</where>
+
+			<where>
+				<if test="shopId != null and shopId !=''">
+					and shop_id = ${shopId}
+				</if>
+				<if test="shopName != null and shopName !=''">
+					and shop_name = ${shopName}
+				</if>
+
+			</where>
+		<choose>
+			<when test="shopIdOrder != null and shopIdOrder == 1">
+				order by shop_id desc,
+			</when>
+		<otherwise>
+				order by shop_id asc,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="shopNameOrder != null and shopNameOrder == 1">
+				shop_name desc
+			</when>
+			<otherwise>
+				shop_name asc
+			</otherwise>
+		</choose>
+<!--		<choose>-->
+<!--			<when test="pageSize != null ">-->
+<!--				limit limit #{firstRow},#{pageSize}-->
+<!--			</when>-->
+<!--			<otherwise>-->
+<!--				limit #{firstRow},#{pageSize}-->
+<!--			</otherwise>-->
+<!--		</choose>-->
 
 	</select>
 

@@ -17,7 +17,7 @@ public interface ShopService {
 	 */
 	List<Shop> findAll();
 
-	List<Shop> find(ConcurrentHashMap<String,String> map);
+	List<Shop> find(ConcurrentHashMap<String,Object> map);
 
 	void save(Shop shop);
 

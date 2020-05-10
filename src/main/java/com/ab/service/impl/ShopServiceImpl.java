@@ -30,7 +30,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> find(ConcurrentHashMap<String, String> map) {
+    public List<Shop> find(ConcurrentHashMap<String, Object> map) {
         return shopMapper.find(map);
     }
 
